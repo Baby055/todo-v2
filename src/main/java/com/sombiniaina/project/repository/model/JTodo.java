@@ -5,10 +5,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-
 import java.time.Instant;
 import java.util.UUID;
+import lombok.*;
 
 @Entity
 @Table(name = "todo")
@@ -18,15 +17,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class JTodo {
-    @Id private UUID id;
+  @Id private UUID id;
 
-    @NotBlank private String username;
-    @NotBlank private String title;
+  @NotBlank private String username;
+  @NotBlank private String title;
 
-    private String description;
+  private String description;
 
-    @NotNull private Boolean completed;
-    private String s3AttachmentKey;
+  @NotNull private Boolean completed;
+  private String s3AttachmentKey;
 
-    private Instant creationDate;
+  private Instant creationDate;
 }
