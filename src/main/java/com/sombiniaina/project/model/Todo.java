@@ -1,9 +1,8 @@
 package com.sombiniaina.project.model;
 
-import lombok.Builder;
-
 import java.time.Instant;
 import java.util.UUID;
+import lombok.Builder;
 
 @Builder
 public record Todo(
