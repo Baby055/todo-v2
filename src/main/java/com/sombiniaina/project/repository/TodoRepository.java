@@ -1,7 +1,12 @@
 package com.sombiniaina.project.repository;
 
 import com.sombiniaina.project.repository.model.JTodo;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface TodoRepository extends JpaRepository<JTodo, UUID> {}
+@Repository
+public interface TodoRepository extends JpaRepository<JTodo, UUID> {
+  List<JTodo> findByUsername(String username);
+}
