@@ -1,4 +1,4 @@
-CREATE TABLE user
+CREATE TABLE app_user
 (
     id uuid primary key ,
     username varchar not null ,
