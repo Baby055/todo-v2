@@ -6,4 +6,4 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record AppUser(UUID id, String username, String email, @JsonIgnore String password_hash, Role role) {}
+public record AppUser(UUID id, String username, String email, @JsonIgnore String passwordHash, Role role) {}
