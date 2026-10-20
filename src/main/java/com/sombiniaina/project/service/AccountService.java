@@ -22,7 +22,8 @@ public class AccountService {
   @Transactional
   public AppUser addAccount(String username, String email, String rawPassword, Role role) {
     if (appUserRepository.existsByUsername(username)) {
-      throw new AccountAlreadyExistsException("Account already exists with this username" + username);
+      throw new AccountAlreadyExistsException(
+          "Account already exists with this username" + username);
     }
 
     if (appUserRepository.existsByEmail(email)) {

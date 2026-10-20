@@ -35,10 +35,7 @@ public class SecurityConf {
                     .hasAnyRole("ADMIN", "USER")
                     .anyRequest()
                     .authenticated())
-            .formLogin(form -> form
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/tasks", true)
-                    .permitAll())
+        .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/tasks", true).permitAll())
         .logout(logout -> logout.logoutSuccessUrl("/"));
     return http.build();
   }

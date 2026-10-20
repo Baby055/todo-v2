@@ -18,36 +18,40 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 @AllArgsConstructor
 public class AuthController {
-    private final AccountService accountService;
+  private final AccountService accountService;
 
-    public record RegisterRequest(@NotBlank String username, @NotBlank @Email String email, @Size(min = 8) @NotBlank String password) {}
+  public record RegisterRequest(
+      @NotBlank String username,
+      @NotBlank @Email String email,
+      @Size(min = 8) @NotBlank String password) {}
 
-    @GetMapping("/register")
-    public String register(Model model) {
-        model.addAttribute("registerRequest", new RegisterRequest(null, null, null));
-        return "register";
+  @GetMapping("/register")
+  public String register(Model model) {
+    model.addAttribute("registerRequest", new RegisterRequest(null, null, null));
+    return "register";
+  }
+
+  @PostMapping("/register")
+  public String register(
+      @ModelAttribute @Valid RegisterRequest registerRequest, BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      return "register";
     }
-
-    @PostMapping("/register")
-    public String register(@ModelAttribute @Valid RegisterRequest registerRequest, BindingResult bindingResult) {
-       if (bindingResult.hasErrors()) {
-           return "register";
-       }
-       try {
-           accountService.addAccount(
-                   registerRequest.username(),
-                   registerRequest.email(),
-                   registerRequest.password(),
-                   Role.USER);
-       } catch (AccountAlreadyExistsException e) {
-           bindingResult.reject("accountExists", e.getMessage());
-           return "register";
-       }
-       return "redirect:/login";
+    try {
+      accountService.addAccount(
+          registerRequest.username(),
+          registerRequest.email(),
+          registerRequest.password(),
+          Role.USER);
+    } catch (AccountAlreadyExistsException e) {
+      bindingResult.reject("accountExists", e.getMessage());
+      return "register";
     }
+    return "redirect:/login";
+  }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
+  @GetMapping("/login")
+  public String login() {
+    return "login";
+  }
 }
