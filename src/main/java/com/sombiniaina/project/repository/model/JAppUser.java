@@ -4,9 +4,8 @@ import com.sombiniaina.project.model.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-
 import java.util.UUID;
+import lombok.*;
 
 @Entity
 @Table(name = "app_user")
@@ -16,19 +15,19 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class JAppUser {
-    @Id private UUID id;
+  @Id private UUID id;
 
-    @Column(name = "username", unique = true, nullable = false)
-    @NotBlank
-    private String username;
+  @Column(name = "username", unique = true, nullable = false)
+  @NotBlank
+  private String username;
 
-    @Column(name = "email",  unique = true, nullable = false)
-    @NotBlank
-    private String email;
+  @Column(name = "email", unique = true, nullable = false)
+  @NotBlank
+  private String email;
 
-    @NotBlank private String passwordHash;
+  @NotBlank private String passwordHash;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private Role role;
+  @Enumerated(EnumType.STRING)
+  @NotNull
+  private Role role;
 }
