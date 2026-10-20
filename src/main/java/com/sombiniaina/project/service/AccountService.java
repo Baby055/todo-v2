@@ -1,5 +1,6 @@
 package com.sombiniaina.project.service;
 
+import com.sombiniaina.project.exception.AccountAlreadyExistsException;
 import com.sombiniaina.project.mapper.AppUserMapper;
 import com.sombiniaina.project.model.AppUser;
 import com.sombiniaina.project.model.Role;
@@ -20,35 +21,27 @@ public class AccountService {
     private final AppUserMapper appUserMapper;
 
     @Transactional
-    public AppUser createUser(
+    public AppUser addAccount(
             String username,
             String email,
-            String rawPassword
+            String rawPassword,
+            Role role
     ){
-        JAppUser jAppUser =
-                JAppUser.builder()
-                        .id(UUID.randomUUID())
-                        .username(username)
-                        .email(email)
-                        .passwordHash(passwordEncoder.encode(rawPassword))
-                        .role(Role.USER)
-                        .build();
-        return appUserMapper.toModel(appUserRepository.save(jAppUser));
-    }
+        if (appUserRepository.existsByUsername(username)) {
+            throw new AccountAlreadyExistsException("Account already exists");
+        }
 
-    @Transactional
-    public AppUser createAdmin(
-            String username,
-            String email,
-            String rawPassword
-    ){
+        if (appUserRepository.existsByEmail(email)) {
+            throw new AccountAlreadyExistsException("Account already exists");
+        }
+
         JAppUser jAppUser =
                 JAppUser.builder()
                         .id(UUID.randomUUID())
                         .username(username)
                         .email(email)
                         .passwordHash(passwordEncoder.encode(rawPassword))
-                        .role(Role.ADMIN)
+                        .role(role)
                         .build();
         return appUserMapper.toModel(appUserRepository.save(jAppUser));
     }
