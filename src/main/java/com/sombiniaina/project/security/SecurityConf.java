@@ -22,10 +22,10 @@ public class SecurityConf {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable())
+    http.csrf(withDefaults())
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/ping", "/health/**")
+                auth.requestMatchers("/ping", "/health/**", "/register", "/login")
                     .permitAll()
                     .requestMatchers("/admin/**")
                     .hasRole("ADMIN")
@@ -35,7 +35,10 @@ public class SecurityConf {
                     .hasAnyRole("ADMIN", "USER")
                     .anyRequest()
                     .authenticated())
-        .formLogin(withDefaults())
+            .formLogin(form -> form
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/tasks", true)
+                    .permitAll())
         .logout(logout -> logout.logoutSuccessUrl("/"));
     return http.build();
   }
