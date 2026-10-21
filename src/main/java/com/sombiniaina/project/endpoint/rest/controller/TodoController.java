@@ -19,9 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class TodoController {
   private final TodoService todoService;
 
-  public record CreateTodoRequest(@NotBlank(message = "Task must have title") String title, String description) {}
+  public record CreateTodoRequest(
+      @NotBlank(message = "Task must have title") String title, String description) {}
 
-  public record UpdateTodoRequest(@NotBlank(message = "Task must have title") String title, String description) {}
+  public record UpdateTodoRequest(
+      @NotBlank(message = "Task must have title") String title, String description) {}
 
   @GetMapping("/tasks")
   public String tasks(Model model, Authentication authentication) {
