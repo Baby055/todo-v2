@@ -25,7 +25,7 @@ public class SecurityConf {
     http.csrf(withDefaults())
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/ping", "/health/**", "/register", "/login")
+                auth.requestMatchers("/ping", "/health/**", "/register", "/login", "/error")
                     .permitAll()
                     .requestMatchers("/admin/**")
                     .hasRole("ADMIN")
