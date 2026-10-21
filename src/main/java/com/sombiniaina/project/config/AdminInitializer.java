@@ -22,9 +22,9 @@ public class AdminInitializer implements CommandLineRunner {
   public AdminInitializer(
       AccountService accountService,
       AppUserRepository appUserRepository,
-      @Value("${app.admin.username:admin}") String adminUsername,
-      @Value("${app.admin.email:}") String adminEmail,
-      @Value("${app.admin.password:}") String adminPassword) {
+      @Value("${bootstrap.admin.username:admin}") String adminUsername,
+      @Value("${bootstrap.admin.email:}") String adminEmail,
+      @Value("${bootstrap.admin.password:}") String adminPassword) {
     this.accountService = accountService;
     this.appUserRepository = appUserRepository;
     this.adminUsername = adminUsername;
@@ -36,13 +36,13 @@ public class AdminInitializer implements CommandLineRunner {
   public void run(String... args) {
     List<String> missing = new ArrayList<>();
     if (adminUsername.isBlank()) {
-      missing.add("app.admin.username");
+      missing.add("bootstrap.admin.username");
     }
     if (adminEmail.isBlank()) {
-      missing.add("app.admin.email");
+      missing.add("bootstrap.admin.email");
     }
     if (adminPassword.isBlank()) {
-      missing.add("app.admin.password");
+      missing.add("bootstrap.admin.password");
     }
     if (!missing.isEmpty()) {
       log.warn(
