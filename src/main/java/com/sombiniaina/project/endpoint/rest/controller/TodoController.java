@@ -1,10 +1,9 @@
 package com.sombiniaina.project.endpoint.rest.controller;
 
 import com.sombiniaina.project.service.TodoService;
-import java.util.UUID;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -30,18 +29,15 @@ public class TodoController {
 
   @PostMapping("/tasks/create")
   public String createTask(
-          @ModelAttribute @Valid CreateTodoRequest request,
-          BindingResult bindingResult,
-          RedirectAttributes redirectAttributes,
-          Authentication authentication) {
+      @ModelAttribute @Valid CreateTodoRequest request,
+      BindingResult bindingResult,
+      RedirectAttributes redirectAttributes,
+      Authentication authentication) {
     if (bindingResult.hasErrors()) {
       redirectAttributes.addFlashAttribute("error", "Please correct the errors above.");
       return "redirect:/tasks";
     }
-    todoService.createTodo(
-            authentication.getName(),
-            request.title(),
-            request.description());
+    todoService.createTodo(authentication.getName(), request.title(), request.description());
     return "redirect:/tasks";
   }
 
@@ -80,10 +76,10 @@ public class TodoController {
 
   @PostMapping("/admin/tasks/{id}/update")
   public String updateTaskAsAdmin(
-          @PathVariable("id") UUID id,
-          @ModelAttribute @Valid UpdateTodoRequest request,
-          BindingResult bindingResult,
-          RedirectAttributes redirectAttributes) {
+      @PathVariable("id") UUID id,
+      @ModelAttribute @Valid UpdateTodoRequest request,
+      BindingResult bindingResult,
+      RedirectAttributes redirectAttributes) {
     if (bindingResult.hasErrors()) {
       redirectAttributes.addFlashAttribute("error", "Please correct the errors above.");
       return "redirect:/admin/dashboard";
