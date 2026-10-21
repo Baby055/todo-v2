@@ -30,8 +30,7 @@ class TodoServiceTest {
   @Test
   void toggleTaskCompletion_togglesCompletedStatus() {
     UUID id = UUID.randomUUID();
-    JTodo jTodo =
-        JTodo.builder().id(id).username("alice").title("t").completed(false).build();
+    JTodo jTodo = JTodo.builder().id(id).username("alice").title("t").completed(false).build();
     when(todoRepository.findById(id)).thenReturn(Optional.of(jTodo));
     when(todoRepository.save(any(JTodo.class))).thenReturn(jTodo);
 
@@ -55,8 +54,7 @@ class TodoServiceTest {
   @Test
   void toggleTaskCompletion_throwsWhenTaskBelongsToAnotherUser() {
     UUID id = UUID.randomUUID();
-    JTodo jTodo =
-        JTodo.builder().id(id).username("bob").title("t").completed(false).build();
+    JTodo jTodo = JTodo.builder().id(id).username("bob").title("t").completed(false).build();
     when(todoRepository.findById(id)).thenReturn(Optional.of(jTodo));
 
     assertThatThrownBy(() -> todoService.toggleTaskCompletion(id, "alice"))
@@ -122,8 +120,7 @@ class TodoServiceTest {
   @Test
   void deleteTodoAsUser_deletesTaskForOwner() {
     UUID id = UUID.randomUUID();
-    JTodo jTodo =
-        JTodo.builder().id(id).username("alice").title("t").completed(false).build();
+    JTodo jTodo = JTodo.builder().id(id).username("alice").title("t").completed(false).build();
     when(todoRepository.findById(id)).thenReturn(Optional.of(jTodo));
 
     todoService.deleteTodoAsUser(id, "alice");
@@ -134,8 +131,7 @@ class TodoServiceTest {
   @Test
   void deleteTodoAsUser_throwsWhenTaskBelongsToAnotherUser() {
     UUID id = UUID.randomUUID();
-    JTodo jTodo =
-        JTodo.builder().id(id).username("bob").title("t").completed(false).build();
+    JTodo jTodo = JTodo.builder().id(id).username("bob").title("t").completed(false).build();
     when(todoRepository.findById(id)).thenReturn(Optional.of(jTodo));
 
     assertThatThrownBy(() -> todoService.deleteTodoAsUser(id, "alice"))
