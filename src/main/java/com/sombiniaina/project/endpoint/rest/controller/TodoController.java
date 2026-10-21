@@ -1,21 +1,25 @@
 package com.sombiniaina.project.endpoint.rest.controller;
 
 import com.sombiniaina.project.service.TodoService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @AllArgsConstructor
 public class TodoController {
   private final TodoService todoService;
 
-  public record CreateTodoRequest(String title, String description) {}
+  public record CreateTodoRequest(@NotBlank String title, String description) {}
 
-  public record UpdateTodoRequest(String title, String description) {}
+  public record UpdateTodoRequest(@NotBlank String title, String description) {}
 
   @GetMapping("/tasks")
   public String tasks(Model model, Authentication authentication) {
@@ -25,7 +29,14 @@ public class TodoController {
 
   @PostMapping("/tasks/create")
   public String createTask(
-      @ModelAttribute CreateTodoRequest request, Authentication authentication) {
+      @ModelAttribute @Valid CreateTodoRequest request,
+      BindingResult bindingResult,
+      RedirectAttributes redirectAttributes,
+      Authentication authentication) {
+    if (bindingResult.hasErrors()) {
+      redirectAttributes.addFlashAttribute("error", "Please correct the errors above.");
+      return "redirect:/tasks";
+    }
     todoService.createTodo(authentication.getName(), request.title(), request.description());
     return "redirect:/tasks";
   }
@@ -40,7 +51,13 @@ public class TodoController {
   public String updateTask(
       @PathVariable("id") UUID id,
       Authentication authentication,
-      @ModelAttribute UpdateTodoRequest request) {
+      RedirectAttributes redirectAttributes,
+      @ModelAttribute @Valid UpdateTodoRequest request,
+      BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      redirectAttributes.addFlashAttribute("error", "Please correct the errors above.");
+      return "redirect:/tasks";
+    }
     todoService.updateTodo(id, authentication.getName(), request.title(), request.description());
     return "redirect:/tasks";
   }
@@ -52,19 +69,27 @@ public class TodoController {
   }
 
   @GetMapping("/admin/dashboard")
-  public String adminDashboard(Model model, Authentication authentication) {
+  public String adminDashboard(Model model) {
     model.addAttribute("adminTodos", todoService.getAllTasksForAdmin());
     return "admin-dashboard";
   }
 
   @PostMapping("/admin/tasks/{id}/update")
-  public String updateTask(@PathVariable("id") UUID id, @ModelAttribute UpdateTodoRequest request) {
+  public String updateTaskAsAdmin(
+      @PathVariable("id") UUID id,
+      @ModelAttribute @Valid UpdateTodoRequest request,
+      BindingResult bindingResult,
+      RedirectAttributes redirectAttributes) {
+    if (bindingResult.hasErrors()) {
+      redirectAttributes.addFlashAttribute("error", "Please correct the errors above.");
+      return "redirect:/admin/dashboard";
+    }
     todoService.updateTodoAsAdmin(id, request.title(), request.description());
     return "redirect:/admin/dashboard";
   }
 
   @PostMapping("/admin/tasks/{id}/delete")
-  public String deleteTask(@PathVariable("id") UUID id) {
+  public String deleteTaskAsAdmin(@PathVariable("id") UUID id) {
     todoService.deleteTodoAsAdmin(id);
     return "redirect:/admin/dashboard";
   }
