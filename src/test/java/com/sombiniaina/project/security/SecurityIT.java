@@ -63,11 +63,7 @@ class SecurityIT {
   @WithMockUser(roles = "USER")
   void postWithCsrf_passesCsrfFilter() throws Exception {
     mockMvc
-        .perform(
-            post("/tasks/create")
-                .with(csrf())
-                .param("title", "t")
-                .param("description", "d"))
+        .perform(post("/tasks/create").with(csrf()).param("title", "t").param("description", "d"))
         .andExpect(status().is3xxRedirection());
   }
 
