@@ -20,10 +20,10 @@ public class TodoController {
   private final TodoService todoService;
 
   public record CreateTodoRequest(
-      @NotBlank(message = "Task must have title") String title, String description) {}
+      @NotBlank(message = "Task must have a title") String title, String description) {}
 
   public record UpdateTodoRequest(
-      @NotBlank(message = "Task must have title") String title, String description) {}
+      @NotBlank(message = "Task must have a title") String title, String description) {}
 
   @GetMapping("/tasks")
   public String tasks(Model model, Authentication authentication) {

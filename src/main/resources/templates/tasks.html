@@ -2,53 +2,53 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Liste des tâches</title>
+    <title>Tasks List</title>
 </head>
 <body>
-<h1>Liste des tâches</h1>
+<h1>Tasks List</h1>
 
 <div th:if="${error}">
-    <p style="color: red" th:text="${error}">Erreur</p>
+    <p style="color: red" th:text="${error}">Error</p>
 </div>
 
 <div th:if="${#lists.isEmpty(todosList)}">
-    <span>Aucune tâche trouvée, voulez-vous en créer une ?</span>
+    <span>No tasks found, want to create one?</span>
 </div>
 
 <table>
     <thead>
         <tr>
-            <th>Titre</th>
+            <th>Title</th>
             <th>Description</th>
-            <th>Statut</th>
-            <th>Mettre à jour</th>
-            <th>Supprimer</th>
+            <th>Status</th>
+            <th>Update</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
         <tr th:each="task : ${todosList}">
-            <td th:text="${task.title}">Titre</td>
+            <td th:text="${task.title}">Title</td>
             <td th:text="${task.description}">Description</td>
             <td>
-                <span th:text="${task.completed} ? 'Terminé' : 'À faire'">Statut</span>
+                <span th:text="${task.completed} ? 'Completed' : 'To do'">Status</span>
                 <form th:action="@{/tasks/{id}/toggle(id=${task.id})}" method="post">
-                    <button type="submit">Changer le statut</button>
+                    <button type="submit">Toggle status</button>
                 </form>
             </td>
             <td>
                 <form th:action="@{/tasks/{id}/update(id=${task.id})}" method="post">
                     <div>
-                        <input type="text" name="title" placeholder="Titre" th:value="${task.title}" required />
+                        <input type="text" name="title" placeholder="Title" th:value="${task.title}" required />
                     </div>
                     <div>
                         <input type="text" name="description" placeholder="Description" th:value="${task.description}" />
                     </div>
-                    <button type="submit">Mettre à jour</button>
+                    <button type="submit">Update</button>
                 </form>
             </td>
             <td>
                 <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post">
-                    <button type="submit">Supprimer</button>
+                    <button type="submit">Delete</button>
                 </form>
             </td>
         </tr>
@@ -57,18 +57,18 @@
 
 <form th:action="@{/tasks/create}" method="post">
     <div>
-        <label for="new-title">Titre : </label>
-        <input type="text" id="new-title" name="title" placeholder="Titre" required />
+        <label for="new-title">Title : </label>
+        <input type="text" id="new-title" name="title" placeholder="Title" required />
     </div>
     <div>
         <label for="new-description">Description : </label>
         <input type="text" id="new-description" name="description" placeholder="Description" />
     </div>
-    <button type="submit">Créer</button>
+    <button type="submit">Create</button>
 </form>
 
 <form method="POST" th:action="@{/logout}">
-    <button type="submit">Déconnexion</button>
+    <button type="submit">Logout</button>
 </form>
 </body>
 </html>
