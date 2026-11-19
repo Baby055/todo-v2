@@ -21,9 +21,11 @@ public class AuthController {
   private final AccountService accountService;
 
   public record RegisterRequest(
-      @NotBlank String username,
-      @NotBlank @Email String email,
-      @Size(min = 8) @NotBlank String password) {}
+      @NotBlank(message = "Username is required") String username,
+      @NotBlank(message = "Email is required") @Email(message = "Email is invalid") String email,
+      @NotBlank(message = "Password is required")
+          @Size(min = 8, message = "Password must be at least 8 characters")
+          String password) {}
 
   @GetMapping("/register")
   public String register(Model model) {

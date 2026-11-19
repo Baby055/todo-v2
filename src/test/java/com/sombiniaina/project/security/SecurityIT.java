@@ -90,7 +90,6 @@ class SecurityIT {
   }
 
   @Test
-  @Disabled("templates manquants")
   void anonymous_canAccessRegisterAndLoginWithoutRedirect() throws Exception {
     mockMvc.perform(get("/register")).andExpect(status().isOk());
     mockMvc.perform(get("/login")).andExpect(status().isOk());
