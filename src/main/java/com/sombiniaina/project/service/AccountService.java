@@ -27,7 +27,8 @@ public class AccountService {
     }
 
     if (appUserRepository.existsByEmail(email)) {
-      throw new AccountAlreadyExistsException("An account already exists with this email : " + email);
+      throw new AccountAlreadyExistsException(
+          "An account already exists with this email : " + email);
     }
 
     JAppUser jAppUser =
